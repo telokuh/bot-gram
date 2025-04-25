@@ -1,15 +1,32 @@
 #!/bin/bash
 
-# Jalankan script1.py di latar belakang (&)
-echo "Running script1.py..."
-python3 app.py &
+# File Flask Anda (ganti 'app:app' dengan nama file dan objek app Anda)
+# Contoh: jika file Anda bernama main.py dan variabel Flask app bernama 'app', gunakan 'main:app'
+FLASK_APP_FILE="app:app"
 
-# Jalankan script2.py di latar belakang (&)
-echo "Running script2.py..."
-python3 bot.py &
+# File Bot Telegram Anda
+TELEGRAM_BOT_FILE="bot.py"
 
-# Tunggu hingga semua proses di latar belakang selesai
-# Ini penting agar kontainer tetap berjalan selama script Python berjalan
+# Port yang diberikan oleh Koyeb
+PORT=8080
+# Gunakan Gunicorn untuk menjalankan Flask di port ini
+echo "Starting Flask app with Gunicorn on port $PORT..."
+# Jalankan Gunicorn di latar belakang
+gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 8 "$FLASK_APP_FILE" &
+# Anda bisa menyesuaikan --workers dan --threads
+
+# Jalankan bot Telegram di latar belakang
+echo "Starting Telegram bot..."
+python "$TELEGRAM_BOT_FILE" &
+
+# Tangkap ID proses (PID) dari proses yang baru saja dijalankan di latar belakang
+FLASK_PID=$!
+BOT_PID=$! # Mungkin sama jika dijalankan sangat cepat, tapi tidak masalah untuk wait
+
+echo "Flask PID: $FLASK_PID, Bot PID: $BOT_PID"
+
+# Tunggu hingga salah satu proses latar belakang selesai
+# Ini akan menjaga kontainer tetap berjalan selama salah satu script berjalan
 wait -n
 
-echo "All scripts finished."
+echo "One of the processes has finished. Container may stop."
