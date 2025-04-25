@@ -78,6 +78,7 @@ async def echo(bot, update):
                 o = entity.offset
                 length = entity.length
                 url = url[o: o + length]
+    # Tambahan opsi impersonate yt-dlp di sini
     if Config.HTTP_PROXY != "":
         command_to_exec = [
             "yt-dlp",
@@ -87,9 +88,19 @@ async def echo(bot, update):
             url,
             "--proxy",
             Config.HTTP_PROXY,
+            "--extractor-args",
+            "generic:impersonate=chrome104"
         ]
     else:
-        command_to_exec = ["yt-dlp", "--no-warnings", "--allow-dynamic-mpd", "-j", url]
+        command_to_exec = [
+            "yt-dlp",
+            "--no-warnings",
+            "--allow-dynamic-mpd",
+            "-j",
+            url,
+            "--extractor-args",
+            "generic:impersonate=chrome104"
+        ]
     if youtube_dl_username is not None:
         command_to_exec.append("--username")
         command_to_exec.append(youtube_dl_username)
