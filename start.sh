@@ -27,6 +27,6 @@ echo "Flask PID: $FLASK_PID, Bot PID: $BOT_PID"
 
 # Tunggu hingga salah satu proses latar belakang selesai
 # Ini akan menjaga kontainer tetap berjalan selama salah satu script berjalan
-wait -n
+
 
 echo "One of the processes has finished. Container may stop."
