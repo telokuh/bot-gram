@@ -7,5 +7,5 @@ WORKDIR .
 COPY . .
 
 RUN pip3 install --no-cache-dir -r requirements.txt
-
-CMD ["python3", "bot.py"]
+RUN chmod +x start.sh
+CMD ["./start.sh"]
