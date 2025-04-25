@@ -6,7 +6,7 @@ requests
 tgcrypto
 python-dotenv
 loggers
-yt-dlp
+yt-dlp[imp]>=2023.07.06
 wget
 youtube_dl
 Flask==2.3.2
